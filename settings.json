@@ -1,0 +1,293 @@
+[
+    {
+        "id": "asst_q2ZnKJFFXIp219YTNVLck3qA",
+        "created_at": 1731302530,
+        "description": "Responsible for generating content ideas and writing scripts.",
+        "instructions": "# Agency Description\n\nA content creation agency focused on generating high-quality content ideas and scripts based on trend analysis and YouTube performance.\n\n# Mission Statement\n\nTo empower content creators by providing data-driven insights and creative content solutions.\n\n# Operating Environment\n\nThe agency operates in a digital environment, utilizing various APIs and tools to analyze trends and performance metrics.\n\n# Agent Role\n\nThe Content Manager is responsible for generating content ideas and writing scripts.\n\n# Goals\n\n1. Generate content ideas based on analysis.\n2. Write and edit scripts in Markdown format.\n\n# Process Workflow\n\n1. Analyze performance of the latest YouTube videos.\n2. Analyze latest trends with the Trend Analyzer Agent.\n3. Analyze content performance for these trends using the YouTube Analyzer Agent.\n4. Generate content ideas.\n5. Select and confirm idea with the user.\n6. Write a script draft.\n7. Edit script based on suggestions.",
+        "metadata": {},
+        "model": "gpt-4o-2024-08-06",
+        "name": "Content Manager",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "ContentIdeaGenerator",
+                    "description": "Generates content ideas based on analysis.",
+                    "parameters": {
+                        "properties": {
+                            "topic": {
+                                "description": "The topic for which to generate content ideas.",
+                                "title": "Topic",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "topic"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "MarkdownScriptWriter",
+                    "description": "Writes and edits scripts in Markdown format.",
+                    "parameters": {
+                        "properties": {
+                            "script_content": {
+                                "description": "The content of the script to be written in Markdown.",
+                                "title": "Script Content",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "script_content"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "SendMessage",
+                    "description": "Use this tool to facilitate direct, synchronous communication between specialized agents within your agency. When you send a message using this tool, you receive a response exclusively from the designated recipient agent. To continue the dialogue, invoke this tool again with the desired recipient agent and your follow-up message. Remember, communication here is synchronous; the recipient agent won't perform any tasks post-response. You are responsible for relaying the recipient agent's responses back to the user, as the user does not have direct access to these replies. Keep engaging with the tool for continuous interaction until the task is fully resolved. Do not send more than 1 message at a time.",
+                    "parameters": {
+                        "$defs": {
+                            "recipient": {
+                                "enum": [
+                                    "Trend Analyzer Agent",
+                                    "YouTube Analyzer Agent"
+                                ],
+                                "title": "recipient",
+                                "type": "string"
+                            }
+                        },
+                        "properties": {
+                            "my_primary_instructions": {
+                                "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perform. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in separate message. Keep in mind, that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or additional_instructions parameters.",
+                                "title": "My Primary Instructions",
+                                "type": "string"
+                            },
+                            "recipient": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/$defs/recipient"
+                                    }
+                                ],
+                                "description": "Trend Analyzer Agent: Analyzes latest trends and identifies content gaps.\nYouTube Analyzer Agent: Analyzes YouTube channel performance and identifies content gaps.\n"
+                            },
+                            "message": {
+                                "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions.",
+                                "title": "Message",
+                                "type": "string"
+                            },
+                            "message_files": {
+                                "anyOf": [
+                                    {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "A list of file ids to be sent as attachments to this message. Only use this if you have the file id that starts with 'file-'.",
+                                "examples": [
+                                    "file-1234",
+                                    "file-5678"
+                                ],
+                                "title": "Message Files"
+                            },
+                            "additional_instructions": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "Additional context or instructions for the recipient agent about the task. For example, additional information provided by the user or other agents.",
+                                "title": "Additional Instructions"
+                            }
+                        },
+                        "required": [
+                            "message",
+                            "my_primary_instructions",
+                            "recipient"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.5,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_wIYTKmJ1G5lharZGZ7Mkdvwp",
+        "created_at": 1731302530,
+        "description": "Analyzes latest trends and identifies content gaps.",
+        "instructions": "# Agency Description\n\nA content creation agency focused on generating high-quality content ideas and scripts based on trend analysis and YouTube performance.\n\n# Mission Statement\n\nTo empower content creators by providing data-driven insights and creative content solutions.\n\n# Operating Environment\n\nThe agency operates in a digital environment, utilizing various APIs and tools to analyze trends and performance metrics.\n\n# Agent Role\n\nThe Trend Analyzer Agent analyzes the latest trends and identifies content gaps.\n\n# Goals\n\n1. Extract keywords from news articles.\n2. Analyze keywords using pytrends.\n3. Compile a comprehensive report identifying content gaps.\n\n# Process Workflow\n\n1. Analyze latest trends.\n2. Extract keywords from news articles using NLTK.\n3. Analyze keywords using pytrends.\n4. Send report back to the Content Manager.",
+        "metadata": {},
+        "model": "gpt-4o-2024-08-06",
+        "name": "Trend Analyzer Agent",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "TrendAnalysisTool",
+                    "description": "Analyzes latest trends and extracts keywords.",
+                    "parameters": {
+                        "properties": {},
+                        "type": "object",
+                        "required": []
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "SendMessage",
+                    "description": "Use this tool to facilitate direct, synchronous communication between specialized agents within your agency. When you send a message using this tool, you receive a response exclusively from the designated recipient agent. To continue the dialogue, invoke this tool again with the desired recipient agent and your follow-up message. Remember, communication here is synchronous; the recipient agent won't perform any tasks post-response. You are responsible for relaying the recipient agent's responses back to the user, as the user does not have direct access to these replies. Keep engaging with the tool for continuous interaction until the task is fully resolved. Do not send more than 1 message at a time.",
+                    "parameters": {
+                        "$defs": {
+                            "recipient": {
+                                "const": "YouTube Analyzer Agent",
+                                "enum": [
+                                    "YouTube Analyzer Agent"
+                                ],
+                                "title": "recipient",
+                                "type": "string"
+                            }
+                        },
+                        "properties": {
+                            "my_primary_instructions": {
+                                "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perform. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in separate message. Keep in mind, that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or additional_instructions parameters.",
+                                "title": "My Primary Instructions",
+                                "type": "string"
+                            },
+                            "recipient": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/$defs/recipient"
+                                    }
+                                ],
+                                "description": "YouTube Analyzer Agent: Analyzes YouTube channel performance and identifies content gaps.\n"
+                            },
+                            "message": {
+                                "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions.",
+                                "title": "Message",
+                                "type": "string"
+                            },
+                            "message_files": {
+                                "anyOf": [
+                                    {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "A list of file ids to be sent as attachments to this message. Only use this if you have the file id that starts with 'file-'.",
+                                "examples": [
+                                    "file-1234",
+                                    "file-5678"
+                                ],
+                                "title": "Message Files"
+                            },
+                            "additional_instructions": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "Additional context or instructions for the recipient agent about the task. For example, additional information provided by the user or other agents.",
+                                "title": "Additional Instructions"
+                            }
+                        },
+                        "required": [
+                            "message",
+                            "my_primary_instructions",
+                            "recipient"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.5,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_Y3fgIOw9ZQOBpPAOpkXy2VzM",
+        "created_at": 1731302532,
+        "description": "Analyzes YouTube channel performance and identifies content gaps.",
+        "instructions": "# Agency Description\n\nA content creation agency focused on generating high-quality content ideas and scripts based on trend analysis and YouTube performance.\n\n# Mission Statement\n\nTo empower content creators by providing data-driven insights and creative content solutions.\n\n# Operating Environment\n\nThe agency operates in a digital environment, utilizing various APIs and tools to analyze trends and performance metrics.\n\n# Agent Role\n\nThe YouTube Analyzer Agent analyzes YouTube channel performance and identifies content gaps.\n\n# Goals\n\n1. Assess the performance of videos.\n2. Analyze demographics of the channel.\n3. Evaluate sentiment in comments.\n4. Identify content gaps and high-performing topics.\n\n# Process Workflow\n\n1. Analyze demographics of the channel.\n2. Assess the performance of videos.\n3. Analyze competitors.\n4. Evaluate sentiment in comments.\n5. Send findings back to the Content Manager.",
+        "metadata": {},
+        "model": "gpt-4o-2024-08-06",
+        "name": "YouTube Analyzer Agent",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "YouTubeAnalysisTool",
+                    "description": "Analyzes YouTube channel performance and identifies content gaps.",
+                    "parameters": {
+                        "properties": {
+                            "channel_id": {
+                                "description": "The YouTube channel ID to analyze.",
+                                "title": "Channel Id",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "channel_id"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.5,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    }
+]

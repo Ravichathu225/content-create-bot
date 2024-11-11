@@ -1,0 +1,4 @@
+openai
+nltk
+pytrends
+agency_swarm
